@@ -10,17 +10,17 @@ import com.kazge.cisco.ged125.message.request.servicecontrol.InitServiceCtrlReqM
 import com.kazge.cisco.ged125.message.request.servicecontrol.RunScriptReqMessage;
 import com.kazge.cisco.ged125.message.response.OpenConfMessage;
 import com.kazge.cisco.ged125.message.response.servicecontrol.NewCallMessage;
-import com.com.kazge.common.midware.common.JacksonUtils;
-import com.com.kazge.common.midware.common.Log;
-import com.com.kazge.common.midware.common.SimpleBaseTest;
+import com.kazge.common.JacksonUtils;
+import com.kazge.common.Log;
+import com.kazge.common.SimpleBaseTest;
 
 public class Ged125SessionClientTest extends SimpleBaseTest {
 	private Ged125SessionClient createClient() {
 		Ged125SessionClient client = null;
-		 client = new Ged125SessionClient("localhost", 5001, 16, 120);
+		client = new Ged125SessionClient("localhost", 5001, 16, 120);
 		// client = new Ged125SessionClient("54.201.116.21", 5000, 16, 120);
-//		client = new Ged125SessionClient("69.85.93.32", 5100, 16, 120);
-//		client = new Ged125SessionClient(" 10.2.74.115", 5000, 16, 120);
+		// client = new Ged125SessionClient("69.85.93.32", 5100, 16, 120);
+		// client = new Ged125SessionClient(" 10.2.74.115", 5000, 16, 120);
 
 		return client;
 	}
@@ -50,11 +50,12 @@ public class Ged125SessionClientTest extends SimpleBaseTest {
 						@Override
 						public void onMessage(Ged125Message message) {
 							Log.debug("resp message:" + JacksonUtils.toJsonString(message));
-							if (message instanceof NewCallMessage){
+							if (message instanceof NewCallMessage) {
 								ConnectMessage cmsg = new ConnectMessage();
 								cmsg.setLabelType(MessageEnum.LABEL_TYPE_NORMAL);
 								cmsg.setLabel("testclient:" + System.currentTimeMillis());
-								cmsg.getServiceControlHeader().setDialogueID(((NewCallMessage) message).getServiceControlHeader().getDialogueID());
+								cmsg.getServiceControlHeader().setDialogueID(
+										((NewCallMessage) message).getServiceControlHeader().getDialogueID());
 								client.sendMessage(cmsg);
 							}
 						}

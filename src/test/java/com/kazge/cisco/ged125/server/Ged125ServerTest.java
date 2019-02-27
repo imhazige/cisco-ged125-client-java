@@ -20,11 +20,11 @@ import com.kazge.cisco.ged125.message.response.servicecontrol.InitServiceCtrlCon
 import com.kazge.cisco.ged125.message.response.servicecontrol.InitServiceCtrlDataMessage;
 import com.kazge.cisco.ged125.message.response.servicecontrol.InitServiceCtrlEndMessage;
 import com.kazge.cisco.ged125.message.socket.Ged125MessageChannel;
-import com.com.kazge.common.midware.common.BitUtils;
-import com.com.kazge.common.midware.common.ExceptionUtils;
-import com.com.kazge.common.midware.common.JacksonUtils;
-import com.com.kazge.common.midware.common.Log;
-import com.com.kazge.common.midware.common.SimpleBaseTest;
+import com.kazge.common.BitUtils;
+import com.kazge.common.ExceptionUtils;
+import com.kazge.common.JacksonUtils;
+import com.kazge.common.Log;
+import com.kazge.common.SimpleBaseTest;
 
 public class Ged125ServerTest extends SimpleBaseTest {
 	public void testRunServer() {
@@ -137,13 +137,13 @@ public class Ged125ServerTest extends SimpleBaseTest {
 
 					private void sendSettingEccVarsMessage() {
 						Map<String, Object> sets = new HashMap<String, Object>();
-						
+
 						Map<String, Object> objm = new HashMap<String, Object>();
-						
+
 						objm.put("tag", 200);
 						objm.put("enable", true);
 						sets.put("user.name", objm);
-						
+
 						objm = new HashMap<String, Object>();
 						objm.put("tag", 201);
 						objm.put("enable", false);
@@ -188,7 +188,7 @@ public class Ged125ServerTest extends SimpleBaseTest {
 
 						sendMessage(vmsg);
 					}
-					
+
 					private Map<Long, String> getEccTagMap() {
 						if (null == eccTagMap) {
 							eccTagMap = new HashMap<Long, String>();
@@ -205,7 +205,7 @@ public class Ged125ServerTest extends SimpleBaseTest {
 					@Override
 					public void onChannelException(Throwable cause) {
 						Log.error(ExceptionUtils.silence(cause));
-						
+
 					}
 				};
 			}

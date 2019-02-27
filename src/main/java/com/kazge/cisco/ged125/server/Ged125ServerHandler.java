@@ -7,7 +7,7 @@ import java.util.List;
 import com.kazge.cisco.ged125.message.Ged125DataUtils;
 import com.kazge.cisco.ged125.message.Ged125Message;
 import com.kazge.cisco.ged125.message.socket.Ged125MessageChannel;
-import com.com.kazge.common.midware.common.Log;
+import com.kazge.common.Log;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,27 +27,27 @@ public class Ged125ServerHandler extends ByteToMessageDecoder {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		reset();
-		if (null != ged125Session){
+		if (null != ged125Session) {
 			ged125Session.onChannelException(cause);
-		}else if (cause instanceof SocketException){
-			//socket exception are normal
-//			Log.debug("SocketException:" + cause.getMessage());
-			if ("Connection reset by peer".equalsIgnoreCase(cause.getMessage())){
-				//do nothing, heartbeat check from balancer will throw this error
-			}else{
-				Log.debug("SocketException:" +  cause.getMessage());
+		} else if (cause instanceof SocketException) {
+			// socket exception are normal
+			// Log.debug("SocketException:" + cause.getMessage());
+			if ("Connection reset by peer".equalsIgnoreCase(cause.getMessage())) {
+				// do nothing, heartbeat check from balancer will throw this error
+			} else {
+				Log.debug("SocketException:" + cause.getMessage());
 			}
-		} else if (cause instanceof IOException){
-			//io exception is normal
-			if ("Connection reset by peer".equalsIgnoreCase(cause.getMessage())){
-				//do nothing, heartbeat check from balancer will throw this error
-			}else{
-				Log.debug("IOException:" +  cause.getMessage());
+		} else if (cause instanceof IOException) {
+			// io exception is normal
+			if ("Connection reset by peer".equalsIgnoreCase(cause.getMessage())) {
+				// do nothing, heartbeat check from balancer will throw this error
+			} else {
+				Log.debug("IOException:" + cause.getMessage());
 			}
-		} else{
+		} else {
 			super.exceptionCaught(ctx, cause);
 		}
-//		Log.error(new RuntimeException(cause),"exceptionCaught-----------");
+		// Log.error(new RuntimeException(cause),"exceptionCaught-----------");
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class Ged125ServerHandler extends ByteToMessageDecoder {
 	@Override
 	protected void handlerRemoved0(ChannelHandlerContext ctx) throws Exception {
 		super.handlerRemoved0(ctx);
-		
-		if (null != ged125Channel){
+
+		if (null != ged125Channel) {
 			sessionManager.remove(ged125Session.getId());
 			ged125Channel.close();
 			reset();
@@ -90,16 +90,16 @@ public class Ged125ServerHandler extends ByteToMessageDecoder {
 		// msg body
 		byte[] data = new byte[gedLength];
 		in.readBytes(data);
-		
-		//only create real session when we know it is from PG and it is GED125 data
-		if (null == ged125Channel){
+
+		// only create real session when we know it is from PG and it is GED125 data
+		if (null == ged125Channel) {
 			ged125Channel = new Ged125MessageChannel(ctx);
 
 			ged125Session = sessionManager.create(ged125Channel);
 		}
-		
-		Ged125Message ged125Message = ged125Channel.readMessage(gedType,data);
-		
+
+		Ged125Message ged125Message = ged125Channel.readMessage(gedType, data);
+
 		ged125Session.onMessage(ged125Message);
 
 		reset();

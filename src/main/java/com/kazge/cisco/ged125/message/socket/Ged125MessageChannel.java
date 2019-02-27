@@ -28,8 +28,8 @@ import com.kazge.cisco.ged125.message.sender.OpenConfMessageSender;
 import com.kazge.cisco.ged125.message.sender.OpenReqMessageSender;
 import com.kazge.cisco.ged125.message.sender.RegisterVariablesMessageSender;
 import com.kazge.cisco.ged125.message.sender.ServiceCtrlMessageSender;
-import com.com.kazge.common.midware.common.ExceptionUtils;
-import com.com.kazge.common.midware.common.Log;
+import com.kazge.common.ExceptionUtils;
+import com.kazge.common.Log;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
@@ -55,9 +55,9 @@ public class Ged125MessageChannel {
 		channelHandlerContext.close();
 		channelHandlerContext = null;
 	}
-	
-	public SocketAddress getRemoteAddress(){
-		if (null == channelHandlerContext){
+
+	public SocketAddress getRemoteAddress() {
+		if (null == channelHandlerContext) {
 			return null;
 		}
 		return channelHandlerContext.channel().remoteAddress();
@@ -81,7 +81,7 @@ public class Ged125MessageChannel {
 			Ged125Message msg = null;
 
 			msg = parser.newInstance().parse(data);
-			
+
 			return msg;
 		} catch (Exception e) {
 			Log.error("read message type %s error.", type);
@@ -149,14 +149,14 @@ public class Ged125MessageChannel {
 
 				@Override
 				public void operationComplete(Future<? super Void> future) throws Exception {
-					if(future.isSuccess()) {
-	                    System.out.println("Wrote message on active");
-	                }else{
-	                	Throwable t = future.cause();
-	                	Log.error("error when send message:%s" , t.getMessage());
-	                }
+					if (future.isSuccess()) {
+						System.out.println("Wrote message on active");
+					} else {
+						Throwable t = future.cause();
+						Log.error("error when send message:%s", t.getMessage());
+					}
 				}
-				
+
 			});
 			return len;
 		} catch (Exception e) {

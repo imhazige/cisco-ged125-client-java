@@ -2,8 +2,8 @@ package com.kazge.cisco.ged125.server;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.com.kazge.common.midware.common.ExceptionUtils;
-import com.com.kazge.common.midware.common.Log;
+import com.kazge.common.ExceptionUtils;
+import com.kazge.common.Log;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -26,7 +26,7 @@ public class Ged125Server {
 	private int maxConnections;
 	private int coreThreadCount;
 	private int bufferSize;
-	
+
 	public int getPort() {
 		return port;
 	}
@@ -47,23 +47,22 @@ public class Ged125Server {
 		return sessionManager;
 	}
 
-	public Ged125Server(Ged125ServerSessionManager manager, String name, int port
-			) {
-		this( manager,  name,  port,  -1,
-				 -1,-1);
+	public Ged125Server(Ged125ServerSessionManager manager, String name, int port) {
+		this(manager, name, port, -1, -1, -1);
 	}
-	
+
 	/**
 	 * 
 	 * @param manager
 	 * @param name
 	 * @param port
-	 * @param coreThreadCount worker thread count valie less than 1 will ignore and use default
-	 * @param maxConnections reserved parameter, have no use for now
+	 * @param coreThreadCount worker thread count valie less than 1 will ignore and
+	 *                        use default
+	 * @param maxConnections  reserved parameter, have no use for now
 	 * @param bufferSize
 	 */
 	public Ged125Server(Ged125ServerSessionManager manager, String name, int port, int coreThreadCount,
-			int maxConnections,int bufferSize) {
+			int maxConnections, int bufferSize) {
 		this.name = name;
 		this.port = port;
 		this.started = new AtomicBoolean(false);
@@ -78,14 +77,14 @@ public class Ged125Server {
 		if (!hasStarted)
 			throw new IllegalStateException("Server has been already started");
 
-		Log.info("Starting the server %s at port %s", getName(),getPort());
+		Log.info("Starting the server %s at port %s", getName(), getPort());
 		bossGroup = new NioEventLoopGroup(); // (1)
-		if (0 < coreThreadCount){
+		if (0 < coreThreadCount) {
 			workerGroup = new NioEventLoopGroup(coreThreadCount);
-		}else{
+		} else {
 			workerGroup = new NioEventLoopGroup();
 		}
-		
+
 		try {
 			b = new ServerBootstrap(); // (2)
 			b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class) // (3)
@@ -97,21 +96,22 @@ public class Ged125Server {
 					});
 
 			// http://stackoverflow.com/questions/14075688/what-does-channeloption-so-backlog-do
-			//this is not the max connection
+			// this is not the max connection
 			b.option(ChannelOption.SO_BACKLOG, 128); // (5)
-			//ged125 required
-			//but if set, the balancer heartbeat check will make many many error, so do not set
-//			b.childOption(ChannelOption.SO_LINGER, 0);
-//			b.childOption(ChannelOption.TCP_NODELAY, false);
-//			//other
-//			b.childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
-//			if (0 < bufferSize){
-//				b.childOption(ChannelOption.SO_SNDBUF, bufferSize);
-//				b.childOption(ChannelOption.SO_RCVBUF, bufferSize);	
-//			}
+			// ged125 required
+			// but if set, the balancer heartbeat check will make many many error, so do not
+			// set
+			// b.childOption(ChannelOption.SO_LINGER, 0);
+			// b.childOption(ChannelOption.TCP_NODELAY, false);
+			// //other
+			// b.childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
+			// if (0 < bufferSize){
+			// b.childOption(ChannelOption.SO_SNDBUF, bufferSize);
+			// b.childOption(ChannelOption.SO_RCVBUF, bufferSize);
+			// }
 			// Bind and start to accept incoming connections.
 			f = b.bind(port).sync(); // (7)
-			Log.info("Started the server %s at port %s", getName(),getPort());
+			Log.info("Started the server %s at port %s", getName(), getPort());
 
 			// Wait until the server socket is closed.
 			// In this example, this does not happen, but you can do that to

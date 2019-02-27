@@ -10,7 +10,7 @@ import com.kazge.cisco.ged125.message.MessageEnum;
 import com.kazge.cisco.ged125.message.socket.Ged125MessageChannel;
 import org.apache.commons.lang.ArrayUtils;
 
-import com.com.kazge.common.midware.common.StringUtils;
+import com.kazge.common.StringUtils;
 
 public abstract class AbstractMessageSender {
 	protected abstract void prepareData(Ged125Message message);
@@ -40,9 +40,9 @@ public abstract class AbstractMessageSender {
 	public void addUint(long n) {
 		bytes.add(Ged125DataUtils.uint2Bytes(n));
 	}
-	
-	public void addBooleanF(int tag,Boolean v) {
-		if (null == v){
+
+	public void addBooleanF(int tag, Boolean v) {
+		if (null == v) {
 			return;
 		}
 		addF(tag, Ged125DataUtils.boolean2Bytes(v));

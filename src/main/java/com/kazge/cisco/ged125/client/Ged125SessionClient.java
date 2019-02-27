@@ -10,8 +10,8 @@ import com.kazge.cisco.ged125.message.request.OpenReqMessage;
 import com.kazge.cisco.ged125.message.response.CloseConfMessage;
 import com.kazge.cisco.ged125.message.response.OpenConfMessage;
 import com.kazge.cisco.ged125.message.socket.Ged125MessageChannel;
-import com.com.kazge.common.midware.common.Log;
-import com.com.kazge.common.midware.common.StringUtils;
+import com.kazge.common.Log;
+import com.kazge.common.StringUtils;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;

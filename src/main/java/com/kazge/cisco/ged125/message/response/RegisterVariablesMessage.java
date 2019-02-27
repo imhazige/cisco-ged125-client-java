@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.kazge.cisco.ged125.message.EccName;
 import com.kazge.cisco.ged125.message.MessageEnum;
-import com.com.kazge.common.midware.common.BitUtils;
+import com.kazge.common.BitUtils;
 
 public class RegisterVariablesMessage extends ResponseMessage {
 
